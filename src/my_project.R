@@ -3,10 +3,16 @@ library(Seurat)
 library(dplyr)
 
 #### Change This setting to re run pre-processing pipeline #####
-run_pre_processing=F
+run_pre_processing=T
 
-#Setting global variables
+# Environment variables
+station=0;  #Station 1 = Laptop; 0 = home computer
+
 working_directory='F:/Documents/WORK/EPFL/Master/2019-2020/Spring semester/Single cell biology/SCB_project'
+if(station==1){working_directory="CHANGE"};
+setwd(working_directory);
+
+#Parameters
 data_path='./data/MOUSE_BRAIN_DATASET_3_COUNTS.tsv'
 project_name='Single cell biology'
 min_cells=3
@@ -78,9 +84,9 @@ if(run_pre_processing){
   saveRDS(crm , file = "./data/results/scb_project.rds")}
 
 #Analysis pipeline -> run from here for fig
-working_directory='F:/Documents/WORK/EPFL/Master/2019-2020/Spring semester/Single cell biology/Project'
-setwd(working_directory)
-crm=readRDS("./data/results/scb_project.rds")
+
+if(!run_pre_processing){crm=readRDS("./data/results/scb_project.rds")}
+
 
 #finding cluster marker genes
 crm.markers = FindAllMarkers(crm, only.pos = T, min.pct = 0.25, logfc.threshold = 0.25)
